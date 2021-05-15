@@ -20,23 +20,29 @@ class nodeAstar:
     isCurrent = False
 
 
-    def __init__(self,currentPosition, targetPosition, currentNode , targetNode ):
+    def __init__(self):
+        # generates random weight of square
+        self.weightOfPosition = r.randint(1,10)
+
+    def getDistanceToTarget(self):
+        return self.distanceToTarget
+
+    def setTarget(self,currentPosition, targetPosition, currentNode , targetNode ):
         if not isinstance(currentPosition, XYobject) and not isinstance(targetPosition, XYobject):
             raise TypeError("a distance entered was not a XYObject ")
 
         self.isTarget = targetNode
         self.isCurrent = currentNode
-        self.weightOfPosition = r.randint(1,10)
         self.distanceToTarget = math.sqrt(
             ((currentPosition.getY() - targetPosition.getY())**2) + ((currentPosition.getX() - targetPosition.getX())**2))
-
-    def getDistanceToTarget(self):
-        return self.distanceToTarget
 
 
 
     def getWeight(self):
         return self.weightOfPosition
+
+    def setWeight(self, newWeight):
+        self.weightOfPosition = newWeight
 
     def getWeightAndCarryOver(self):
         return self.weightOfPosition + self.carryOverWeight

@@ -10,14 +10,10 @@ class GenerateBoard:
     position = None
     goalPoistion = None
 
-    def __init__(self, boardSizeInput, startingPosition ,targetPosition):
+    def __init__(self, boardSizeInput):
         # checks for incorrect datatypes being used
         if not isinstance(boardSizeInput, XYobject):
             raise TypeError("the board size was not a XY class object")
-        elif not isinstance(targetPosition, XYobject):
-            raise TypeError("the targetPosition was not a XY class object")
-        elif not isinstance(startingPosition, XYobject):
-            raise TypeError("the StartingPositon was not a XY class object")
 
         # checks to see if all entered positions are legal
         elif boardSizeInput.getX() <= 0 or boardSizeInput.getY() <= 0:
@@ -28,16 +24,9 @@ class GenerateBoard:
         else:
 
             # set the player position and target position affter they have been checkd
-            self.position = startingPosition
-            self.goalPoistion = targetPosition
             for i in range(boardSizeInput.getX()):
                 for u in range(boardSizeInput.getY()):
-                    if (i == startingPosition.getY() and u == startingPosition.getX()):
-                        self.row.append(nodeAstar(XYobject(u, i), targetPosition, False, True))
-                    elif (i == targetPosition.getY() and u == targetPosition.getX()):
-                        self.row.append(nodeAstar(XYobject(u, i), targetPosition, True, False))
-                    else:
-                        self.row.append(nodeAstar(XYobject(u, i), targetPosition, False, False))
+                        self.row.append(nodeAstar())
                 self.board.append(self.row.copy())
                 self.row.clear()
                 
@@ -73,6 +62,24 @@ class GenerateBoard:
         holdNodes = self.board[position.getY()][position.getX()].getNeighbours()
         return holdNodes
 
+    # this is used so that the same weight will keep appearing unless the user changes the board
+    def changesWeight(self, weights):
+        for i in range(len(weights)):
+            for u in range(len(weights[0])):
+                self.board[i][u].setWeight(weights[i][u])
+
+    def getWeights(self):
+        hold = []
+        holdBoard = []
+        for i in range(len(self.board)):
+            for u in range(len(self.board[0])):
+                hold.append(self.board[i][u].getWeight())
+            holdBoard.append(hold.copy())
+            hold.clear()
+
+        return  holdBoard
+
+
     def printBoard(self):
         hold = []
         for i in range(len(self.board)):
@@ -89,6 +96,9 @@ class GenerateBoard:
 
         self.position = startingPosition
         self.goalPoistion = targetPosition
+        for i in range(len(self.board)):
+            for u in range(len(self.board[0])):
+                self.board[i][u].setTarget(XYobject(u, i), targetPosition, False, False)
 
 
 

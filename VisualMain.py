@@ -18,9 +18,7 @@ class VisualElement:
         
         color = (100,100,100)
         whiteColor = (230,230,230)
-        orangeColor = (247, 159, 31)
-        orangeColor2 = (245, 169, 59)
-        orangeColor3 = (245, 179, 83)
+
 
         pygame.init()
         win = pygame.display.set_mode((666, 505))
@@ -55,6 +53,7 @@ class VisualElement:
 
         holdVisBoard = []
         temp = []
+        holdBoard = GenerateBoard(boardSize)
 
         # generates the inital grid objects
         for i in range(lengthOfBoard):
@@ -120,9 +119,16 @@ class VisualElement:
                 startPoint = None
                 targetPoint = None
 
-            if (reloadButton.display(win, mousePos, leftMouse) == True
-                    and startPoint != None and targetPoint != None):
-                print("print 1")
+            if (reloadButton.display(win, mousePos, leftMouse) == True):
+                holdBoard.clearBoard()
+                del holdBoard
+                holdBoard = GenerateBoard(boardSize)
+
+                for i in range(lengthOfBoard):
+                    for u in range(widthOfBoard):
+                        holdVisBoard[i][u].changeState(0)
+                startPoint = None
+                targetPoint = None
 
 
             if (startButton.display(win, mousePos, leftMouse) == True
@@ -133,24 +139,30 @@ class VisualElement:
                     for u in range(widthOfBoard):
                         holdVisBoard[i][u].changeState(0)
 
-                holdBoard = GenerateBoard(boardSize, startPoint, targetPoint)
+                holdBoard.setStartAndGoal(targetPoint, startPoint)
+                holdBoard.printBoard()
                 holdAlgo = AstarPathFinding(holdBoard)
                 holdPath = holdAlgo.lookForPath()
 
+                holdWeights = holdBoard.getWeights()
+                print(len(holdWeights))
                 holdBoard.clearBoard()
 
                 del holdBoard
                 del holdAlgo
-     
+                holdBoard = GenerateBoard(boardSize)
+                holdBoard.changesWeight(holdWeights.copy())
+
+                holdWeights.clear()
+
                 for l in range(len(holdPath)):
                     holdVisBoard[holdPath[l].getX()][holdPath[l].getY()].changeState(1)
 
                 runNeedClear = True
 
-
 # buttons display
-
 
             win.blit(text, start)
             win.blit(text1, clearTex)
             win.blit(text2, reset)
+
