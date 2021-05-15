@@ -30,19 +30,16 @@ class VisualElement:
         font = pygame.font.Font('freesansbold.ttf', 32)
         text = font.render('draw', True, whiteColor , orangeColor)
         start = text.get_rect()
-        start.center = (81, 50)
+        start.center = (111, 50)
 
         text1 = font.render('clear', True, whiteColor, orangeColor)
         clearTex = text1.get_rect()
-        clearTex.center = (247, 50)
+        clearTex.center = (333, 50)
 
-        text2 = font.render('maze', True, whiteColor, orangeColor)
-        maze = text2.get_rect()
-        maze.center = (414, 50)
 
-        text3 = font.render('reset', True, whiteColor, orangeColor)
-        reset = text3.get_rect()
-        reset.center = (580, 50)
+        text2 = font.render('reset', True, whiteColor, orangeColor)
+        reset = text2.get_rect()
+        reset.center = (555, 50)
 
 
         loop = True
@@ -50,10 +47,10 @@ class VisualElement:
         startPoint = None
         targetPoint = None
 
-        startButton = Button(XYobject(0, 0), XYobject(166, 103))
-        clearButton = Button(XYobject(166, 0), XYobject(167, 103))
-        mazeButton = Button(XYobject(333, 0), XYobject(166, 103))
-        reloadButton = Button(XYobject(499, 0), XYobject(166, 103))
+        startButton = Button(XYobject(0, 0), XYobject(222, 103))
+        clearButton = Button(XYobject(222, 0), XYobject(222, 103))
+        reloadButton = Button(XYobject(444, 0), XYobject(222, 103))
+
         holdVisBoard = []
         temp = []
 
@@ -121,10 +118,6 @@ class VisualElement:
                 startPoint = None
                 targetPoint = None
 
-            if (mazeButton.display(win, mousePos, leftMouse) == True
-                    and startPoint != None and targetPoint != None):
-                print("test 2")
-
             if (reloadButton.display(win, mousePos, leftMouse) == True
                     and startPoint != None and targetPoint != None):
                 print("print 1")
@@ -155,5 +148,4 @@ class VisualElement:
 
             win.blit(text, start)
             win.blit(text1, clearTex)
-            win.blit(text2, maze)
-            win.blit(text3, reset)
+            win.blit(text2, reset)
