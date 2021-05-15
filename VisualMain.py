@@ -15,29 +15,31 @@ class VisualElement:
         trackerWidth = 3
         trackerLength = 3
         gap = 30
+        
         color = (100,100,100)
         whiteColor = (230,230,230)
         orangeColor = (247, 159, 31)
+        orangeColor2 = (245, 169, 59)
+        orangeColor3 = (245, 179, 83)
 
         pygame.init()
         win = pygame.display.set_mode((666, 505))
         win.fill(color)
         pygame.display.set_caption("A star pathfinding")
 
-        # text
+        # text setup
         pygame.display.set_caption('Show Text')
-
         font = pygame.font.Font('freesansbold.ttf', 32)
-        text = font.render('draw', True, whiteColor , orangeColor)
+
+        text = font.render('draw', True, whiteColor, None)
         start = text.get_rect()
         start.center = (111, 50)
 
-        text1 = font.render('clear', True, whiteColor, orangeColor)
+        text1 = font.render('clear', True, whiteColor, None)
         clearTex = text1.get_rect()
         clearTex.center = (333, 50)
 
-
-        text2 = font.render('reset', True, whiteColor, orangeColor)
+        text2 = font.render('reset', True, whiteColor, None)
         reset = text2.get_rect()
         reset.center = (555, 50)
 
@@ -144,6 +146,9 @@ class VisualElement:
                     holdVisBoard[holdPath[l].getX()][holdPath[l].getY()].changeState(1)
 
                 runNeedClear = True
+
+
+# buttons display
 
 
             win.blit(text, start)

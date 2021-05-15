@@ -9,6 +9,7 @@ class Button:
     xyPosition = None
     xySize = None
     clicked = False
+    active = False
 
     def __init__(self, XYPosition, XYSize):
 
@@ -31,7 +32,6 @@ class Button:
             pygame.draw.rect(windowToDisplayOn, (245, 179, 83),
                              (self.xyPosition.getX(), self.xyPosition.getY()
                               , self.xySize.getX(), self.xySize.getY()))
-
             if (self.clicked == True):
                 self.clicked = False
                 return True
@@ -41,7 +41,6 @@ class Button:
                              (self.xyPosition.getX(), self.xyPosition.getY()
                               , self.xySize.getX(), self.xySize.getY()))
             self.clicked = True
-
         # base
         else:
             pygame.draw.rect(windowToDisplayOn, (247, 159, 31),
