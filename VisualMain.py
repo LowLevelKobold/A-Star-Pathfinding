@@ -10,6 +10,7 @@ from GridSquare import GridSquare
 
 
 class VisualElement:
+    whiteColor = (230, 230, 230)
 
     def __init__(self, boardSize, widthOfBoard, lengthOfBoard):
         trackerWidth = 3
@@ -17,34 +18,28 @@ class VisualElement:
         gap = 30
         
         color = (100,100,100)
-        whiteColor = (230,230,230)
-
 
         pygame.init()
 
         win = pygame.display.set_mode((666, 505))
-
 
         win.fill(color)
         pygame.display.set_caption("A star pathfinding")
 
         # text setup
         pygame.display.set_caption('Show Text')
-        font = pygame.font.Font('freesansbold.ttf', 32)
+        font = pygame.font.Font(None,  32)
+        fontSmall = pygame.font.Font(None, 22)
+        fontForWeights = pygame.font.Font(None, 16)
 
-        fontForWeights = pygame.font.Font('freesansbold.ttf', 12)
+        start,text =self.textGenertor(font, XYobject (107, 30), 'Draw')
+        clearTex, text1 =self.textGenertor(font, XYobject(329, 30), 'Clear')
+        reset, text2 = self.textGenertor(font, XYobject(551, 30), 'Reset')
+        startPosText, text3 = self.textGenertor(fontSmall, XYobject(97, 75), 'Start Position: NA, NA')
+        endPosText, text4 = self.textGenertor(fontSmall, XYobject(317,  75), 'End Position: NA , NA')
+        totalText, text5 = self.textGenertor(fontSmall, XYobject(531,   75), 'Path Length: NA')
 
-        text = font.render('draw', True, whiteColor, None)
-        start = text.get_rect()
-        start.center = (111, 50)
-
-        text1 = font.render('clear', True, whiteColor, None)
-        clearTex = text1.get_rect()
-        clearTex.center = (333, 50)
-
-        text2 = font.render('reset', True, whiteColor, None)
-        reset = text2.get_rect()
-        reset.center = (555, 50)
+        # text for
 
 
         loop = True
@@ -52,9 +47,11 @@ class VisualElement:
         startPoint = None
         targetPoint = None
 
-        startButton = Button(XYobject(0, 0), XYobject(222, 103))
-        clearButton = Button(XYobject(222, 0), XYobject(222, 103))
-        reloadButton = Button(XYobject(444, 0), XYobject(222, 103))
+        buttonSize = XYobject(190,40)
+
+        startButton = Button(XYobject(17,  10), XYobject(buttonSize.getX(), buttonSize.getY()))
+        clearButton = Button(XYobject(237, 10), XYobject(buttonSize.getX(), buttonSize.getY()))
+        reloadButton = Button(XYobject(457,10), XYobject(buttonSize.getX(), buttonSize.getY()))
 
         holdVisBoard = []
         temp = []
@@ -87,6 +84,8 @@ class VisualElement:
 
             holdWeights = holdBoard.getWeights()
 
+            pygame.draw.rect(win, (115, 115, 115), (0, 0, 666, 104))
+
             # grid display
             for i in range(lengthOfBoard):
                 for u in range(widthOfBoard):
@@ -101,9 +100,15 @@ class VisualElement:
                                     holdVisBoard[holdPath[l].getX()][holdPath[l].getY()].changeState(0)
                                 holdPath.clear()
                                 runNeedClear = False
+                                startPosText, text3 = self.textGenertor(fontSmall, XYobject(97, 75),
+                                                                        'Start Position: NA, NA')
+                                totalText, text5 = self.textGenertor(fontSmall, XYobject(531, 75), 'Path Length: NA')
 
 
                         targetPoint = XYobject(i, u)
+                        tempText = "End Position X:" + str(i+1) + " Y:" + str(u+1)
+                        endPosText, text4 =self.textGenertor(fontSmall, XYobject(317,  75)
+                                                                , tempText)
 
                     if (holdVisBoard[i][u].display(win, rightMouse, leftMouse, mousePos ,holdWeights[u][i], fontForWeights) == 3):
                         if (startPoint != None):
@@ -115,8 +120,14 @@ class VisualElement:
                                     holdVisBoard[holdPath[l].getX()][holdPath[l].getY()].changeState(0)
                                 holdPath.clear()
                                 runNeedClear = False
+                                endPosText, text4 = self.textGenertor(fontSmall, XYobject(317, 75),
+                                                                      'End Position: NA , NA')
+                                totalText, text5 = self.textGenertor(fontSmall, XYobject(531, 75), 'Path Length: NA')
 
                         startPoint = XYobject(i, u)
+                        tempText = "Start Position X:" + str(i+1) + " Y:" + str(u+1)
+                        startPosText, text3 = self.textGenertor(fontSmall, XYobject(97, 75)
+                                                                , tempText)
 
 
         # buttons bar
@@ -124,8 +135,15 @@ class VisualElement:
                 for i in range(lengthOfBoard):
                     for u in range(widthOfBoard):
                         holdVisBoard[i][u].changeState(0)
+
+                # reset points
                 startPoint = None
                 targetPoint = None
+
+                # rest text
+                startPosText, text3 = self.textGenertor(fontSmall, XYobject(97, 75), 'Start Position: NA, NA')
+                endPosText, text4 = self.textGenertor(fontSmall, XYobject(317, 75), 'End Position: NA , NA')
+                totalText, text5 = self.textGenertor(fontSmall, XYobject(531, 75), 'Path Length: NA')
 
             if (reloadButton.display(win, mousePos, leftMouse) == True):
                 holdBoard.clearBoard()
@@ -135,8 +153,15 @@ class VisualElement:
                 for i in range(lengthOfBoard):
                     for u in range(widthOfBoard):
                         holdVisBoard[i][u].changeState(0)
+
+                # reset points
                 startPoint = None
                 targetPoint = None
+
+                #reset text
+                startPosText, text3 = self.textGenertor(fontSmall, XYobject(97, 75), 'Start Position: NA, NA')
+                endPosText, text4 = self.textGenertor(fontSmall, XYobject(317, 75), 'End Position: NA , NA')
+                totalText, text5 = self.textGenertor(fontSmall, XYobject(531, 75), 'Path Length: NA')
 
 
             if (startButton.display(win, mousePos, leftMouse) == True
@@ -150,6 +175,9 @@ class VisualElement:
                 holdBoard.setStartAndGoal(targetPoint, startPoint)
                 holdAlgo = AstarPathFinding(holdBoard)
                 holdPath = holdAlgo.lookForPath()
+
+                tempText = "Path Length: " + str(len(holdPath) -1)
+                totalText, text5 = self.textGenertor(fontSmall, XYobject(531, 75), tempText)
 
                 # keeps the weight consistant
                 holdWeights = holdBoard.getWeights()
@@ -167,10 +195,24 @@ class VisualElement:
 
                 runNeedClear = True
 
+#
+
 # buttons text display
+
             win.blit(text, start)
             win.blit(text1, clearTex)
             win.blit(text2, reset)
+            win.blit(text3, startPosText)
+            win.blit(text4, endPosText)
+            win.blit(text5, totalText)
+
+
+
+    def textGenertor(self, font, xy, text):
+        textValue = font.render(str(text), True, self.whiteColor, None)
+        hold = textValue.get_rect()
+        hold.center = (xy.getX(), xy.getY())
+        return hold, textValue
 
 
 
