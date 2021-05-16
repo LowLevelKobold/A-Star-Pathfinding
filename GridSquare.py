@@ -9,12 +9,14 @@ class GridSquare:
     currentState = 0
     gap = 30
 
+    whiteColor = (230, 230, 230)
+
     def __init__(self, pos):
         if not isinstance(pos, XYobject):
             raise TypeError("the pos was not a XY class object")
         self.position = pos
 
-    def display(self, win , rightMouse, leftMouse, mousePos):
+    def display(self, win , rightMouse, leftMouse, mousePos, text, font):
         returnValue = 0
 
         utilty = boundChecker()
@@ -42,6 +44,12 @@ class GridSquare:
         else:
             pygame.draw.rect(win, (25, 255, 0), (self.position.getX()
                                                   , self.position.getY(), self.gap,self.gap))
+
+
+        text1 = font.render(str(text), True, self.whiteColor, None)
+        clearTex = text1.get_rect()
+        clearTex.center = (self.position.getX()+ self.gap-10, self.position.getY()+5)
+        win.blit(text1, clearTex)
 
         return returnValue
 

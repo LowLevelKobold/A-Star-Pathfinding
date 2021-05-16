@@ -21,13 +21,18 @@ class VisualElement:
 
 
         pygame.init()
+
         win = pygame.display.set_mode((666, 505))
+
+
         win.fill(color)
         pygame.display.set_caption("A star pathfinding")
 
         # text setup
         pygame.display.set_caption('Show Text')
         font = pygame.font.Font('freesansbold.ttf', 32)
+
+        fontForWeights = pygame.font.Font('freesansbold.ttf', 12)
 
         text = font.render('draw', True, whiteColor, None)
         start = text.get_rect()
@@ -67,6 +72,7 @@ class VisualElement:
 
         # visual loop used to display objects
         while loop:
+
             pygame.time.delay(100)
 
             for e in pygame.event.get():
@@ -79,14 +85,16 @@ class VisualElement:
             mousePos = XYobject(mouseX, mouseY)
             leftMouse, centerMouse, rightMouse = pygame.mouse.get_pressed()
 
+            holdWeights = holdBoard.getWeights()
+
             # grid display
             for i in range(lengthOfBoard):
                 for u in range(widthOfBoard):
-                    if (holdVisBoard[i][u].display(win, rightMouse, leftMouse, mousePos) == 1):
+                    if (holdVisBoard[i][u].display(win, rightMouse, leftMouse, mousePos, holdWeights[u][i], fontForWeights) == 1):
                         if (targetPoint != None):
                             holdVisBoard[targetPoint.getX()][targetPoint.getY()].changeState(0)
                             holdVisBoard[targetPoint.getX()][targetPoint.getY()].display(win, rightMouse, leftMouse,
-                                                                                         mousePos)
+                                                                                         mousePos, holdWeights[u][i], fontForWeights)
 
                             if (runNeedClear == True):
                                 for l in range(len(holdPath)):
@@ -97,11 +105,11 @@ class VisualElement:
 
                         targetPoint = XYobject(i, u)
 
-                    if (holdVisBoard[i][u].display(win, rightMouse, leftMouse, mousePos) == 3):
+                    if (holdVisBoard[i][u].display(win, rightMouse, leftMouse, mousePos ,holdWeights[u][i], fontForWeights) == 3):
                         if (startPoint != None):
                             holdVisBoard[startPoint.getX()][startPoint.getY()].changeState(0)
                             holdVisBoard[startPoint.getX()][startPoint.getY()].display(win, rightMouse, leftMouse,
-                                                                                       mousePos)
+                                                                                       mousePos, holdWeights[u][i], fontForWeights)
                             if (runNeedClear == True):
                                 for l in range(len(holdPath)):
                                     holdVisBoard[holdPath[l].getX()][holdPath[l].getY()].changeState(0)
@@ -140,12 +148,11 @@ class VisualElement:
                         holdVisBoard[i][u].changeState(0)
 
                 holdBoard.setStartAndGoal(targetPoint, startPoint)
-                holdBoard.printBoard()
                 holdAlgo = AstarPathFinding(holdBoard)
                 holdPath = holdAlgo.lookForPath()
 
+                # keeps the weight consistant
                 holdWeights = holdBoard.getWeights()
-                print(len(holdWeights))
                 holdBoard.clearBoard()
 
                 del holdBoard
@@ -160,9 +167,10 @@ class VisualElement:
 
                 runNeedClear = True
 
-# buttons display
-
+# buttons text display
             win.blit(text, start)
             win.blit(text1, clearTex)
             win.blit(text2, reset)
+
+
 
